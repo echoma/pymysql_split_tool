@@ -35,7 +35,8 @@ Mysql query will become slow when table contains millions of rows. A simple way 
   },
   "rule":{
     "filter":"id>1000",
-    "group_method":"modulus"
+    "group_method":"modulus",
+    "group_base":100
   }
 }
 ```
@@ -65,13 +66,14 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 |  | page_sleep |  | sleep a few seconds between pages to avoid mysql server busy working | 1 |
 |  | order_by |  | select order in **paging mode** | "id asc" |
 |  | group_method |  | split rows by [modulus] or [devide], or [all] | "modulus" |
+|  | group_base |  | [modulus] or [devide] by which number | 100 |
 |  | group_column |  | column name which the method will used on. |
-|  | group_int |  | an int array. if set, this tool will move data whose method result fall in this array.<br/>see this [detailed tips](#how_it_works)<br/>for filter [modulus] and [devide] only. | [1,7,[12,15],20] |
+|  | group_int |  | an int array. if set, this tool will move data whose method result fall in this array.<br/>for filter [modulus] and [devide] only.<br/>pattern: [a,b,[from,to],c,d] | [1,7,[12,15],20] |
 |  | check |  | for "remove" action only. how we check data integrity before removing data |  |
 |  |  | checksum | using mysql checksum() function. default is 0. | 1 |
 |  |  | count | using mysql count() function. default is 1 | 1 |
 
-### how it works
+### How it works internally
 
 For action "split", there are 4 different work flows:
 
@@ -96,7 +98,6 @@ For action "split", there are 4 different work flows:
 	1. make connection to "src" mysql server
 	2. get group list with this sql: select n from `src.database`.`src.table` group by `rule.group_column` method result
 	3. for each group n, copy data with this sql: replace into `dest.database`.`dest.table` select * from `src.database`.`src.table` where `rule.filter` where `rule.group_column` method result = `n`
-
 
 * if `dest.mysql` is not set, `rule.group_int` is set, it works like this:
 
