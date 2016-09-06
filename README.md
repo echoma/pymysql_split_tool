@@ -1,7 +1,3 @@
-# Notice
-
-This tool is still under development!
-
 # What is this?
 
 Mysql query will become slow when table contains millions of rows. A simple way of solving this probolem is spliting the big table into small ones. We use some method to decide which table each row should be moved into. A widely used method is "modulus", e.g. group rows by [ID mod 100]. This tool will help you to do this job easily.
@@ -27,8 +23,8 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 | action | description |
 | -------- | -------- |
 | split | Move rows from a big table into small tables. |
-| check | Check data integrity of new small tables. |
-| remove | Remove rows from a big table after checking data integrity in small tables. |
+| check | Check data integrity of new small tables. ==not implemented yet==. |
+| remove | Remove rows from a big table after checking data integrity in small tables. ==not implemented yet==. |
 
 * A quick look at a sample `task file`:
 
@@ -57,6 +53,10 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 }
 ```
 
+### samples
+
+Check the [test](test) directory for more samples.
+
 ### Supported fields in `task file`:
 
 | field @ level-1 | field @ level-2 | field @ level-3 | description | sample |
@@ -74,8 +74,8 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 |  | mysql |  | mysql conneciton parameters. <br/>If not set, will use the same parameters as "src". <br/>Has same level-3 fileds like "src" |  |
 |  | database |  | name of database where we create new small tables. <br/>If not set, will use the same database name as "src". |  |
 |  | table |  | name pattern of table. **[n]** will be replaced by an integer. | "small\_table\_[n]" |
-|  | create_table_first |  | if set to 1, it will create the small table if not exists. <br/>default is 1. | 0 |
-|  | create_table_sql |  | sql to create new table. <br/>If not set, will use 'show create table' to get a creation sql. | "create table [table_name] if not exists..." |
+|  | create_table_first |  | if set to 1, it will create the small table if not exists. <br/>default is 1. ==not implemented yet==. | 0 |
+|  | create_table_sql |  | sql to create new table. <br/>If not set, will use 'show create table' to get a creation sql. <br/>==not implemented yet==. | "create table [table_name] if not exists..." |
 | rule |  |  | defines how it do the work |  |
 |  | filter |  | a sql 'where' clause telling it which rows should be moved | "id>1000" |
 |  | page_size |  | page size when select in paging mode | 1000 |
