@@ -10,7 +10,11 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 
 * Just create a split task file and run this tool with it:
 
-`python3 ./pymysql_split_tool --action split --file  ./task.json`
+`python ./pymysql_split_tool --action split --file  ./task.json`
+
+`python2` and `python3` are both supported.
+
+* supported parameters:
 
 | parameter name | description |
 | -------- | -------- |

@@ -59,6 +59,7 @@ def get_table_structure(database, table):
     cursor.execute('show create table `'+database+'`.`'+table+'`')
     row = cursor.fetchone()
     db_ori_table_create_sql = row[1]
+    cursor.close()
 #create the new table
 def create_new_table(new_table_name):
     sql = db_ori_table_create_sql.replace(input.task['src']['table'], new_table_name, 1)
@@ -66,11 +67,15 @@ def create_new_table(new_table_name):
     sql = 'use `'+input.task['dest']['database']+'`; '+sql
     logging.debug('creating table '+new_table_name+' with sql: '+sql)
     if 'mysql' in input.task['dest']:
-        db_dest.cursor().execute(sql)
+        cur = db_dest.cursor()
+        cur.execute(sql)
         db_dest.commit()
+        cur.close()
     else:
-        db_src.cursor().execute(sql)
+        cur = db_src.cursor()
+        cur.execute(sql)
         db_src.commit()
+        cur.close()
     db_new_table[new_table_name] = 1
 #insert a row into new table(will make sure the new table exists), without commiting
 def replace_into_new_table(cursor, new_table_name, row):

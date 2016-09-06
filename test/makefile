@@ -19,28 +19,28 @@ prepare:
 
 test_case_01: prepare
 	echo -e "\033[32mtest case 01\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_01.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_01.json
 
 test_case_02: prepare
 	echo -e "\033[32mtest case 02\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_02.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_02.json
 
 test_case_03: prepare
 	echo -e "\033[32mtest case 03\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_03.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_03.json
 
 test_case_04: prepare
 	echo -e "\033[32mtest case 04\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_04.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_04.json
 
 test_case_05: prepare
 	echo -e "\033[32mtest case 05\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_05.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_05.json
 
 test_case_06: prepare
 	echo -e "\033[32mtest case 06\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_06.json
+	python ../pymysql_split_tool.py --action split --task ./test_case_06.json
 
 test_case_07: prepare
 	echo -e "\033[32mtest case 07\033[0m"
-	python3 ../pymysql_split_tool.py --action split --task ./test_case_07.json --debug
+	python ../pymysql_split_tool.py --action split --task ./test_case_07.json

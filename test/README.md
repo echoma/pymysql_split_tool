@@ -1,3 +1,5 @@
+run all test case with this command: `make -s`
+
 | test case | work flow | filter | order by | paging | group_method | group_int list |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | test_case_01 | A | N | N | N | modulus | N |
