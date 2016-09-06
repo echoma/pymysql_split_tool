@@ -1,0 +1,19 @@
+{
+  "src":{
+    "mysql":{
+      "host":"127.0.0.1",
+      "port":3306,
+      "user":"test",
+      "password":"test"
+    },
+    "database":"test",
+    "table":"test"
+  },
+  "dest":{
+    "table":"test_[n]"
+  },
+  "rule":{
+    "group_method":"all",
+    "page_sleep":"1"
+  }
+}

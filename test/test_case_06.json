@@ -1,0 +1,23 @@
+{
+  "src":{
+    "mysql":{
+      "host":"127.0.0.1",
+      "port":3306,
+      "user":"test",
+      "password":"test"
+    },
+    "database":"test",
+    "table":"test"
+  },
+  "dest":{
+    "table":"test_[n]"
+  },
+  "rule":{
+    "group_method":"devide",
+    "group_base":100,
+    "group_column":"data_int2",
+    "group_int":[201401,201512],
+    "filter":"id%2=0",
+    "page_size":10
+  }
+}
