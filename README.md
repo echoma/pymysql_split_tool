@@ -12,9 +12,9 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 
 `python ./pymysql_split_tool --action split --task  ./task.json`
 
-`python2` and `python3` are both supported.
+The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
 
-* supported parameters:
+* Supported parameters:
 
 | parameter name | description |
 | -------- | -------- |
