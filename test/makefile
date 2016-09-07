@@ -7,7 +7,6 @@ test: test_split
 test_split: test_case_01 test_case_02 test_case_03 test_case_04 test_case_05 test_case_06 test_case_07
 
 prepare:
-	#mysql -uroot -e "grant all on *.* to test@'localhost' identified by 'test' with grant option"
 	#create a brand new table for test
 	mysql -utest -ptest -e 'drop database if exists `test`; create database `test` default charset utf8;'
 	mysql -utest -ptest -e 'use test; create table test (id int auto_increment, data_int int, data_int2 int, data_varchar varchar(200), data_bin blob, primary key (id)) ENGINE=InnoDB'

@@ -1,4 +1,6 @@
-run all test case with this command: `make -s`
+* Before run any test, setup the test mysql user with this sql: `mysql -uroot -e "grant all on *.* to test@'localhost' identified by 'test' with grant option"`
+
+* Run all test cases with this command: `make -s`
 
 | test case | work flow | filter | order by | paging | group_method | group_int list |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
