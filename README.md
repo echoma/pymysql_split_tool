@@ -1,6 +1,6 @@
 [简体中文版](README_cn.md)
 
-@[travis ci](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)
+[![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool)
 
 # What is this?
 
