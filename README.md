@@ -1,5 +1,7 @@
 [简体中文版](README_cn.md)
 
+@[travis ci](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)
+
 # What is this?
 
 Mysql query will become slow when table contains millions of rows. A simple way of solving this probolem is spliting the big table into small ones. We use some method to decide which table each row should be moved into. A widely used method is "modulus", e.g. group rows by [ID mod 100]. This tool will help you to do this job easily.

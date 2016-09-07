@@ -6,7 +6,7 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-install: "pip install -r pymysql"
+install: "pip install pymysql"
 script: cd test && make -s
 services:
   - mysql
