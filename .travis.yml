@@ -8,3 +8,7 @@ python:
   - "3.5"
 install: "pip install -r pymysql"
 script: cd test && make -s
+services:
+  - mysql
+before_script:
+  - mysql -uroot -e "grant all on *.* to test@'localhost' identified by 'test' with grant option"
