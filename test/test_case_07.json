@@ -10,7 +10,7 @@
     "table":"test"
   },
   "dest":{
-    "table":"test_[n]"
+    "table":"test_new"
   },
   "rule":{
     "group_method":"all",

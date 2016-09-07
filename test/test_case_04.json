@@ -22,6 +22,6 @@
     "group_method":"modulus",
     "group_base":100,
     "group_column":"id",
-    "group_int":[0,1,[10,15],7]
+    "group_int":[0,[10,12],7]
   }
 }
