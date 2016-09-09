@@ -205,7 +205,3 @@ def do_work():
             logging.debug("\tdeleting records in src table with sql: "+sql)
             db.execute(sql=sql, is_dest=False)
             db.db_src.commit()
-
-if __name__ == '__main__':
-    input.init_by_cmd_line_args()
-    do_work()

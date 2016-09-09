@@ -1,3 +1,6 @@
+dist
+build
+pymysql_split_tool.egg-info
 *.pyc
 *.dat
 *.zip

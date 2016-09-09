@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+BIN := ../pymysql_split_tool/pymysql_split_tool.py
 
 all: test
 
@@ -20,13 +21,13 @@ prepare:
 
 do_cli_test = echo -e "\033[32mStart $(1)\033[0m" && \
 				make prepare && \
-				python ../pymysql_split_tool.py --action split --task ./$(1).json && \
+				python $(BIN) --action split --task ./$(1).json && \
 				echo -e "\033[32mChecking spliting result\033[0m" && \
 				python ./check_test_result.py --action split --case $(1) && \
 				echo -e "\033[32mChecking with action check\033[0m" && \
-				python ../pymysql_split_tool.py --action check --task ./$(1).json &&\
+				python $(BIN) --action check --task ./$(1).json &&\
 				echo -e "\033[32mRemoving with action remove\033[0m" && \
-				python ../pymysql_split_tool.py --action remove --task ./$(1).json &&\
+				python $(BIN) --action remove --task ./$(1).json &&\
 				echo -e "\033[32mChecking remove result\033[0m" && \
 				python ./check_test_result.py --action remove --case $(1)
 
