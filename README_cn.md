@@ -11,13 +11,19 @@ Mysql在数据表包含的记录数达到百万级别后，查询会变得原来
 * 对于已经移动到新表的数据，将这些数据从源表中删除
 * 可以作为python模块调用，这意味着可以动态的调整工具的行为方式
 
-# 使用方法
+# 安装方法
+
+python2: `pip install pymysql_split_tool`
+
+python3: `pip3 install pymysql_split_tool`
+
+支持以下python版本(并做了测试)：`2.6, 2.7, 3.3, 3.4, 3.5`
+
+# 命令行使用方法
 
 * 只要创建一个任务文件，然后执行这个工具即可:
 
 `python ./pymysql_split_tool --action split --task  ./task.json`
-
-支持以下python版本，并做了测试：`2.6, 2.7, 3.3, 3.4, 3.5`
 
 * 命令参数:
 
@@ -64,7 +70,23 @@ Mysql在数据表包含的记录数达到百万级别后，查询会变得原来
 
 ### 更多例子
 
-查看 [test](test) 目录可以看到很多例子.
+查看 [test](test) 目录可以看到很多例子任务文件.
+
+### API使用方法
+
+```python
+import json
+import pymysql_split_tool
+
+task_file = open('path/to/task.json')
+task = json.loads(task_file.read())
+task_file.close()
+
+#初始化一个split任务，需要传入一个任务对象，类型是dict
+pymysql_split_tool.init(“split”, task)
+#执行任务
+pymysql_split_tool.do_work()
+```
 
 ### 任务文件里支持的字段:
 

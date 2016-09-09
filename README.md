@@ -1,6 +1,6 @@
-[简体中文版](README_cn.md)
-
 [![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool)
+
+[简体中文版](README_cn.md)
 
 # What is this?
 
@@ -118,7 +118,9 @@ task_file = open('path/to/task.json')
 task = json.loads(task_file.read())
 task_file.close()
 
-pymysql_split_tool.init(args.action, task)
+#init a split task with a specified task object whose type is dict
+pymysql_split_tool.init("split", task)
+#run the task
 pymysql_split_tool.do_work()
 ```
 
