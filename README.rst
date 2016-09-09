@@ -4,6 +4,9 @@
 Mysql query will become slow when table contains millions of rows. A simple way of solving this probolem is spliting the big table into small ones. We use some method to decide which table each row should be moved into. A widely used method is "modulus", e.g. group rows by [ID mod 100]. This tool will help you to do this job easily.
 
 
+Check home page for usage and more infomation.
+
+
 **Features**
 
 * Move records from one table to another(or other) table(s) according to user specified rules.
