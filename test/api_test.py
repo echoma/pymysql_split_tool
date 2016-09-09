@@ -12,10 +12,8 @@ task_file = open(args.task+'.json')
 task = json.loads(task_file.read())
 task_file.close()
 
+sys.path.append("../pymysql_split_tool")
+import __init__
 
-sys.path.append("..")
-import pymysql_split_tool
-import input
-
-input.init(args.action, task)
-pymysql_split_tool.do_work()
+__init__.init(args.action, task)
+__init__.do_work()

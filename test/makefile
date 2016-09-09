@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-BIN := ../pymysql_split_tool/pymysql_split_tool.py
+BIN := ../pymysql_split_tool/
 
 all: test
 

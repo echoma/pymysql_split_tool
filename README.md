@@ -15,13 +15,19 @@ Mysql query will become slow when table contains millions of rows. A simple way 
 * For records who have been moved to new tables, remove them from source table.
 * Using it as a python module which means dynamically changing the behavior.
 
-# Usage
+# Install
+
+python2: `pip install pymysql_split_tool`
+
+python3: `pip3 install pymysql_split_tool`
+
+The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
+
+# Cli Usage
 
 * Just create a split task file and run this tool with it:
 
-`python ./pymysql_split_tool --action split --task  ./task.json`
-
-The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
+`python -m pymysql_split_tool --action split --task ./task.json`
 
 * Supported parameters:
 
@@ -68,7 +74,7 @@ The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
 
 ### Samples
 
-Check the [test](test) directory for more samples.
+Check the [test](test) directory for more sample task files.
 
 ### Supported fields in `task file`:
 
@@ -101,6 +107,20 @@ Check the [test](test) directory for more samples.
 | check |  |  | for "check" action only. how we check data integrity. |  |
 |  | count |  | set to 1 to use mysql count() function to compare src and dest.. | 1 |
 |  | sum |  | a column name list on which mysql sum() function is used. | ["id","created"] |
+
+### API Usage
+
+```python
+import json
+import pymysql_split_tool
+
+task_file = open('path/to/task.json')
+task = json.loads(task_file.read())
+task_file.close()
+
+pymysql_split_tool.init(args.action, task)
+pymysql_split_tool.do_work()
+```
 
 ### How it works internally
 
