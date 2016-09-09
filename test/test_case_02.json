@@ -25,5 +25,9 @@
     "filter":"id%3=0",
     "order_by":"id asc",
     "page_size":"5"
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }

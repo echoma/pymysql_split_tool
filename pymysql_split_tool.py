@@ -20,9 +20,10 @@ def output_step(row_count, final=False):
 
 def do_work():
     '''The main work flow'''
+    src_database_name = input.task['src']['database']
+    src_table_name = input.task['src']['database']
+    dest_database_name = input.task['dest']['database']
     if input.action=='split':
-        src_database_name = input.task['src']['database']
-        src_table_name = input.task['src']['database']
         total_insert_count = 0
         if 'mysql' in input.task['dest']:
             db.make_conn(args=input.task['src']['mysql'], is_dest=False)
@@ -121,11 +122,8 @@ def do_work():
                 logging.info('start moving data for group_int '+str(group_int_n))
                 new_table_name = input.compose_new_table_name(group_int_n)
                 db.create_new_table(new_table_name)
-                sql = "replace into `"+input.task['dest']['database']+"`.`"+new_table_name+"` select * from `"+src_database_name+"`.`"+src_table_name+"`"
-                if 'filter' in input.task['rule']:
-                    sql += " where "+input.task['rule']['filter']+" and "
-                else:
-                    sql += " where "
+                sql = "replace into `"+dest_database_name+"`.`"+new_table_name+"` select * from `"+src_database_name+"`.`"+src_table_name+"`"
+                sql += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
                 sql += input.compose_group_filter_sql(group_int_n)
                 logging.debug("\tmoving data directly between two tables inside one server with sql: "+sql)
                 cursor = db.execute(sql=sql, is_dest=False)
@@ -135,8 +133,78 @@ def do_work():
                 if 'page_sleep' in input.task['rule']:
                     time.sleep(int(input.task['rule']['page_sleep']))
         output_step(total_insert_count, final=True)
-
-
+    elif input.action=='check':
+        has_dest_mysql = ('mysql' in input.task['dest'])
+        db.make_conn(args=input.task['src']['mysql'], is_dest=False)
+        if has_dest_mysql:
+            db.make_conn(args=input.task['dest']['mysql'], is_dest=True)
+        src_database_name = input.task['src']['database']
+        src_table_name = input.task['src']['database']
+        if 'group_int' not in input.task['rule']:
+            sql = 'select '+input.compose_group_field_sql()+" from `"+src_database_name+"`.`"+src_table_name+"` "+input.compose_group_by_sql()
+            logging.debug("query group_int_list with sql: "+sql)
+            cursor = db.execute(sql=sql, is_dest=False)
+            for row in cursor.fetchall():
+                input.group_int_list.append(int(row[0]))
+            logging.info("query group_int_list from server ok, group_int_list.size="+str(len(input.group_int_list)))
+        for group_int_n in input.group_int_list:
+            logging.info('start check data for group_int '+str(group_int_n))
+            new_table_name = input.compose_new_table_name(group_int_n)
+            if 'count' in input.task['check'] and int(input.task['check']['count'])==1:
+                sql = "select count(*) from `"+src_database_name+"`.`"+src_table_name+"` "
+                sql += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
+                sql += input.compose_group_filter_sql(group_int_n)
+                logging.debug("\tcounting records in src table with sql: "+sql)
+                cursor = db.execute(sql=sql, is_dest=False)
+                count_src = cursor.fetchone()[0]
+                sql2 = "select count(*) from `"+dest_database_name+"`.`"+new_table_name+"` "
+                sql2 += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
+                sql2 += input.compose_group_filter_sql(group_int_n)
+                logging.debug("\tcounting records in dest table with sql: "+sql2)
+                cursor = db.execute(sql=sql2, is_dest=has_dest_mysql)
+                count_dest = cursor.fetchone()[0]
+                if count_src != count_dest:
+                    logging.error('Count not match, src='+str(count_src)+', dest='+str(count_dest))
+                    logging.error('\tsql_src='+sql)
+                    logging.error('\tsql_dest='+sql2)
+                    exit(-1)
+            if 'sum' in input.task['check'] and isinstance(input.task['check']['sum'], list):
+                sql = "select sum(`"+('`),sum(`'.join(input.task['check']['sum']))+"`) from `"+src_database_name+"`.`"+src_table_name+"` "
+                sql += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
+                sql += input.compose_group_filter_sql(group_int_n)
+                logging.debug("\tSum records in src table with sql: "+sql)
+                cursor = db.execute(sql=sql, is_dest=False)
+                sum_src = cursor.fetchone()
+                sql2 = "select sum(`"+('`),sum(`'.join(input.task['check']['sum']))+"`) from `"+dest_database_name+"`.`"+new_table_name+"` "
+                sql2 += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
+                sql2 += input.compose_group_filter_sql(group_int_n)
+                logging.debug("\tSum records in dest table with sql: "+sql2)
+                cursor = db.execute(sql=sql2, is_dest=has_dest_mysql)
+                sum_dest = cursor.fetchone()
+                if sum_src != sum_dest:
+                    logging.error('Sum not match, src='+str(sum_src)+', dest='+str(sum_dest))
+                    logging.error('\tsql_src='+sql)
+                    logging.error('\tsql_dest='+sql2)
+                    exit(-1)
+    elif input.action=='remove':
+        db.make_conn(args=input.task['src']['mysql'], is_dest=False)
+        src_database_name = input.task['src']['database']
+        src_table_name = input.task['src']['database']
+        if 'group_int' not in input.task['rule']:
+            sql = 'select '+input.compose_group_field_sql()+" from `"+src_database_name+"`.`"+src_table_name+"` "+input.compose_group_by_sql()
+            logging.debug("query group_int_list with sql: "+sql)
+            cursor = db.execute(sql=sql, is_dest=False)
+            for row in cursor.fetchall():
+                input.group_int_list.append(int(row[0]))
+            logging.info("query group_int_list from server ok, group_int_list.size="+str(len(input.group_int_list)))
+        for group_int_n in input.group_int_list:
+            logging.info('start removing data for group_int '+str(group_int_n))
+            sql = "delete from `"+src_database_name+"`.`"+src_table_name+"` "
+            sql += " where "+input.task['rule']['filter']+" and " if 'filter' in input.task['rule'] else " where "
+            sql += input.compose_group_filter_sql(group_int_n)
+            logging.debug("\tdeleting records in src table with sql: "+sql)
+            db.execute(sql=sql, is_dest=False)
+            db.db_src.commit()
 
 if __name__ == '__main__':
     input.init_by_cmd_line_args()

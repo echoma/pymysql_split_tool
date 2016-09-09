@@ -19,5 +19,9 @@
     "group_int":[201401,201512],
     "filter":"id%2=0",
     "page_size":10
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }

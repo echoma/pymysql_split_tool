@@ -22,5 +22,9 @@
     "group_method":"devide",
     "group_base":100,
     "group_column":"data_int2"
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }

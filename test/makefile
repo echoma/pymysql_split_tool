@@ -2,9 +2,11 @@ SHELL := /bin/bash
 
 all: test
 
-test: test_split
+test: cli_test api_test
 
-test_split: test_case_01 test_case_02 test_case_03 test_case_04 test_case_05 test_case_06 test_case_07
+cli_test: test_case_01 test_case_02 test_case_03 test_case_04 test_case_05 test_case_06 test_case_07
+
+api_test: test_case_21 test_case_22 test_case_23 test_case_24 test_case_25 test_case_26 test_case_27
 
 prepare:
 	#create a brand new table for test
@@ -16,25 +18,69 @@ prepare:
 	for n in {1041..1060}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20150329, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
 	for n in {1061..1100}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20151205, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
 
-do_split_test = echo -e "\033[32mStart $(1)\033[0m" && make prepare && python ../pymysql_split_tool.py --action split --task ./$(1).json && echo -e "\033[32mChecking result\033[0m" && python ./check_test_result.py --case $(1)
+do_cli_test = echo -e "\033[32mStart $(1)\033[0m" && \
+				make prepare && \
+				python ../pymysql_split_tool.py --action split --task ./$(1).json && \
+				echo -e "\033[32mChecking spliting result\033[0m" && \
+				python ./check_test_result.py --action split --case $(1) && \
+				echo -e "\033[32mChecking with action check\033[0m" && \
+				python ../pymysql_split_tool.py --action check --task ./$(1).json &&\
+				echo -e "\033[32mRemoving with action remove\033[0m" && \
+				python ../pymysql_split_tool.py --action remove --task ./$(1).json &&\
+				echo -e "\033[32mChecking remove result\033[0m" && \
+				python ./check_test_result.py --action remove --case $(1)
+
+do_api_test = echo -e "\033[32mStart $(1)\033[0m" && \
+				make prepare && \
+				python ./api_test.py --action split --task ./$(2) && \
+				echo -e "\033[32mChecking spliting result\033[0m" && \
+				python ./check_test_result.py --action split --case $(2) && \
+				echo -e "\033[32mChecking with action check\033[0m" && \
+				python ./api_test.py --action check --task ./$(2) &&\
+				echo -e "\033[32mRemoving with action remove\033[0m" && \
+				python ./api_test.py --action remove --task ./$(2) &&\
+				echo -e "\033[32mChecking remove result\033[0m" && \
+				python ./check_test_result.py --action remove --case $(2)
 
 test_case_01:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_02:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_03:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_04:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_05:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_06:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
 
 test_case_07:
-	$(call do_split_test,$@)
+	$(call do_cli_test,$@)
+
+
+test_case_21: test_case_01
+	$(call do_api_test,$@,$<)
+
+test_case_22: test_case_02
+	$(call do_api_test,$@,$<)
+
+test_case_23: test_case_03
+	$(call do_api_test,$@,$<)
+
+test_case_24: test_case_04
+	$(call do_api_test,$@,$<)
+
+test_case_25: test_case_05
+	$(call do_api_test,$@,$<)
+
+test_case_26: test_case_06
+	$(call do_api_test,$@,$<)
+
+test_case_27: test_case_07
+	$(call do_api_test,$@,$<)

@@ -15,5 +15,9 @@
   "rule":{
     "group_method":"all",
     "page_sleep":"1"
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }

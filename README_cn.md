@@ -2,13 +2,22 @@
 
 Mysql在数据表包含的记录数达到百万级别后，查询会变得原来越慢。解决这类问题的一种简单办法，就是把这个大表拆成很多份小表。通常我们会使用某种方法来确认某条记录应该被移动到哪个小表里，比如取模（按照ID模100分成100张小表）。这个工具可以帮我们更轻松的完成这个工作。
 
+# 特性
+
+* 按照用户指定的分组规则，把数据从一个表移动记录到另一个或多个新表
+* 在移动数据的过程中动态创建新表
+* 可以在不同的数据库服务器之间移动数据
+* 检查新数据表的数据完整性
+* 对于已经移动到新表的数据，将这些数据从源表中删除
+* 可以作为python模块调用，这意味着可以动态的调整工具的行为方式
+
 # 使用方法
 
 * 只要创建一个任务文件，然后执行这个工具即可:
 
 `python ./pymysql_split_tool --action split --task  ./task.json`
 
-`python2`和`python3`都支持.
+支持以下python版本，并做了测试：`2.6, 2.7, 3.3, 3.4, 3.5`
 
 * 命令参数:
 
@@ -85,6 +94,6 @@ Mysql在数据表包含的记录数达到百万级别后，查询会变得原来
 |  | group_base |  | 分组基数。用来取模或除法的数字 | 100 |
 |  | group_column |  | 表里的这一列将用来做分组计算 |
 |  | group_int |  | 指定整数列表. 如果设置了这个字段，本工具将只对拷贝映射到这些整数的记录.<br/>因此只对`取模`和`余数`两种分组方法有效。<br/>语法(json数组): [数字1,数字2,[起始,结束],数字3,数字4] | [1,7,[12,15],20] |
-|  | check |  | for "remove" action only. how we check data integrity before removing data |  |
-|  |  | checksum | using mysql checksum() function. default is 0. | 1 |
-|  |  | count | using mysql count() function. default is 1 | 1 |
+| check |  |  | `action`为`check`时专用. 指定了我们如何检查数据完整性 |  |
+| | count |  | 如果为1，则使用mysql的count()函数比较源表和新表的记录数 | 1 |
+| | sum | 列名列表，将使用mysql的sum()函数对源表和新表的指定列进行求和 | ["id","created"] |

@@ -6,6 +6,15 @@
 
 Mysql query will become slow when table contains millions of rows. A simple way of solving this probolem is spliting the big table into small ones. We use some method to decide which table each row should be moved into. A widely used method is "modulus", e.g. group rows by [ID mod 100]. This tool will help you to do this job easily.
 
+# Features
+
+* Move records from one table to another(or other) table(s) according to user specified rules.
+* Dynamically create new tables during moving.
+* Move records between different mysql servers.
+* Check data integrity of the new tables.
+* For records who have been moved to new tables, remove them from source table.
+* Using it as a python module which means dynamically changing the behavior.
+
 # Usage
 
 * Just create a split task file and run this tool with it:
@@ -57,7 +66,7 @@ The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
 }
 ```
 
-### samples
+### Samples
 
 Check the [test](test) directory for more samples.
 
@@ -89,13 +98,13 @@ Check the [test](test) directory for more samples.
 |  | group_base |  | [modulus] or [devide] by which number | 100 |
 |  | group_column |  | column name which the method will used on. |
 |  | group_int |  | an int array. if set, this tool will move data whose method result fall in this array.<br/>for method [modulus] and [devide] only.<br/>pattern: [a,b,[from,to],c,d] | [1,7,[12,15],20] |
-|  | check |  | for "remove" action only. how we check data integrity before removing data |  |
-|  |  | checksum | using mysql checksum() function. default is 0. | 1 |
-|  |  | count | using mysql count() function. default is 1 | 1 |
+| check |  |  | for "check" action only. how we check data integrity. |  |
+|  | count |  | set to 1 to use mysql count() function to compare src and dest.. | 1 |
+|  | sum |  | a column name list on which mysql sum() function is used. | ["id","created"] |
 
 ### How it works internally
 
-For action "split", there are 4 different work flows:
+For action `split`, there are 4 different work flows:
 
 * A: if `dest.mysql` is set, `rule.group_int` not set, it works in the following steps:
 
@@ -123,3 +132,15 @@ For action "split", there are 4 different work flows:
 
 	1. make connection to "src" mysql server
 	2. copy data with this sql: replace into `dest.database`.`dest.table` select * from `src.database`.`src.table` where `rule.filter`
+
+For action `check`, here is the work flow:
+
+1. make connection to mysql server.
+2. if `rule.group_int` is not set, use this sql to get a group integer list: select n from `src.database`.`src.table` group by `rule.group_column` method result
+3. for each integer in group list, select count() and sum() in both src and dest tables. do the comparation.
+
+For action `remove`, here is the work flow:
+
+1. make connection to mysql server.
+2. if `rule.group_int` is not set, use this sql to get a group integer list.
+3. for each integer in group list, delete records in src table.

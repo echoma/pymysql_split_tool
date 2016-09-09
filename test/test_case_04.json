@@ -23,5 +23,9 @@
     "group_base":100,
     "group_column":"id",
     "group_int":[0,[10,12],7]
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }

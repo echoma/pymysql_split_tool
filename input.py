@@ -18,7 +18,7 @@ group_int_list = []     #group integer list of task
 By default, if no comment was made, all functions in this file will raise an exception if any error occurred
 '''
 
-def init(param_action=None, param_task=None, param_debug=None):
+def init(param_action, param_task, param_debug=False):
     '''Basical initialization according to the given parameters
     
     @param param_action -- a str whose value is one of ['split','check','remove']
@@ -29,7 +29,7 @@ def init(param_action=None, param_task=None, param_debug=None):
     if param_action not in ['split','check','remove']:
         raise Exception('Invalid "action" value')
     action = param_action
-    if not isinstance(pram_task, dict):
+    if not isinstance(param_task, dict):
         raise Exception('Invalid "task", should be a dict')
     task = param_task
     _init_logging(logging.DEBUG if param_debug else logging.INFO)
@@ -64,6 +64,7 @@ def _check_task():
     _parser.add_argument('--src', required=True)
     _parser.add_argument('--dest', required=True)
     _parser.add_argument('--rule', required=True)
+    _parser.add_argument('--check', required=(action=='check'))
     _parser.parse_dict(task, 'task file')
     #check task.src json level-2 fields
     _parser = MyArgParser()

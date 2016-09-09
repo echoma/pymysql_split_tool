@@ -2,6 +2,7 @@ import argparse,json,logging,sys,pymysql
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--case', required=True)
+parser.add_argument('--action', choices=["split","remove"], required=True)
 parser.add_argument('--debug')
 args = parser.parse_args()
 case_name = args.case
@@ -15,7 +16,7 @@ result_file.close()
 db = pymysql.connect(host='127.0.0.1', port=3306, user='test', password='test', database='test')
 cursor = db.cursor()
 
-def check_tables(result_tables):
+def check_split_tables(result_tables):
     #tables list must match
     real_tables = []
     sql = 'show tables like "test_%"'
@@ -49,7 +50,23 @@ def check_tables(result_tables):
         if real_count!=good_count:
             raise Exception('The table '+name+' count('+str(real_count)+') not good('+str(good_count)+')')
 
-if 'tables' in result:
-    check_tables(result['tables'])
+def check_remove_tables(result_tables):
+    #sum the total count
+    sum_count = 0
+    for name in result_tables.keys():
+        good_result = result_tables[name]
+        good_count = good_result['count']
+        sum_count += good_count
+    cursor.execute('select count(*) from `test`')
+    count = cursor.fetchone()[0]
+    if 100-sum_count!=count:
+        raise Exception('The src table contains '+str(count)+' records, but new tables contains '+str(sum_count)+' records.')
+
+if args.action=='split':
+    if 'tables' in result:
+        check_split_tables(result['tables'])
+elif args.action=='remove':
+    if 'tables' in result:
+        check_remove_tables(result['tables'])
 
 logging.info("Sucess");

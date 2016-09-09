@@ -22,5 +22,9 @@
     "group_method":"modulus",
     "group_base":2,
     "group_column":"id"
+  },
+  "check":{
+    "count":1,
+    "sum":["id","data_int","data_int2"]
   }
 }
