@@ -3,7 +3,7 @@ import argparse,json,logging,sys,pymysql
 parser = argparse.ArgumentParser()
 parser.add_argument('--case', required=True)
 parser.add_argument('--action', choices=["split","remove"], required=True)
-parser.add_argument('--debug')
+parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
 case_name = args.case
 

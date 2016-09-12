@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool)
+[![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool) [![PyPI version](https://badge.fury.io/py/pymysql_split_tool.svg)](https://badge.fury.io/py/pymysql_split_tool)
 
 [简体中文版](README_cn.md)
 
@@ -123,6 +123,8 @@ pymysql_split_tool.init("split", task)
 #run the task
 pymysql_split_tool.do_work()
 ```
+
+Check [here](test/api_test.py) for a sample with monkey patch.
 
 ### How it works internally
 
