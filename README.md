@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool) [![PyPI version](https://badge.fury.io/py/pymysql_split_tool.svg)](https://badge.fury.io/py/pymysql_split_tool)
-
+[![Build Status](https://travis-ci.org/echoma/pymysql_split_tool.svg?branch=master)](https://travis-ci.org/echoma/pymysql_split_tool) [![PyPI version](https://badge.fury.io/py/pymysql-split-tool.svg)](https://badge.fury.io/py/pymysql-split-tool)
 [简体中文版](README_cn.md)
 
 # What is this? 
@@ -21,7 +20,7 @@ python2: `pip install pymysql_split_tool`
 
 python3: `pip3 install pymysql_split_tool`
 
-The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5`
+The following python version are supported and tested: `2.6, 2.7, 3.3, 3.4, 3.5, 3.6, 3.7`
 
 # Cli Usage
 
