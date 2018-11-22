@@ -13,13 +13,13 @@ api_monkey_patch_test: test_case_41 test_case_42 test_case_43 test_case_44 test_
 
 prepare:
 	#create a brand new table for test
-	mysql -utest -ptest -e 'drop database if exists `test`; create database `test` default charset utf8;'
-	mysql -utest -ptest -e 'use test; create table test (id int auto_increment, data_int int not null default 0, data_int2 int not null default 0, data_varchar varchar(200), data_bin blob, primary key (id)) ENGINE=InnoDB'
+	mysql --defaults-extra-file=./my.cnf -e 'drop database if exists `test`; create database `test` default charset utf8;'
+	mysql --defaults-extra-file=./my.cnf -e 'use test; create table test (id int auto_increment, data_int int not null default 0, data_int2 int not null default 0, data_varchar varchar(200), data_bin blob, primary key (id)) ENGINE=InnoDB'
 	#insert test record into test table
-	for n in {1001..1020}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20140102, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
-	for n in {1021..1040}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20140117, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
-	for n in {1041..1060}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20150329, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
-	for n in {1061..1100}; do mysql -utest -ptest -e "use test; insert into test values($$n, $$n*10, 20151205, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
+	for n in {1001..1020}; do mysql --defaults-extra-file=./my.cnf -e "use test; insert into test values($$n, $$n*10, 20140102, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
+	for n in {1021..1040}; do mysql --defaults-extra-file=./my.cnf -e "use test; insert into test values($$n, $$n*10, 20140117, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
+	for n in {1041..1060}; do mysql --defaults-extra-file=./my.cnf -e "use test; insert into test values($$n, $$n*10, 20150329, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
+	for n in {1061..1100}; do mysql --defaults-extra-file=./my.cnf -e "use test; insert into test values($$n, $$n*10, 20151205, '\$$\#\@\%\&\*\'\"\\\?\<\>\:\;', X'00010203');"; done
 
 do_cli_test = echo -e "\033[32m=========\nStart $(1)\n=========\033[0m" && \
 				make prepare && \
