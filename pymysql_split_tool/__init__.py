@@ -1,7 +1,7 @@
 import input
 import controller
 
-__version__ = '0.5.5'
+__version__ = '0.5.6'
 
 def init(action, task, debug=False):
     input.init(action, task, debug)
