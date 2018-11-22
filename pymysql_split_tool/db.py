@@ -66,8 +66,7 @@ def get_table_structure(database, table):
 def create_new_table(new_table_name):
     '''create the new table'''
     sql = db_ori_table_create_sql.replace(input.task['src']['table'], new_table_name, 1)
-    sql = sql.replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS', 1)
-    sql = 'use `'+input.task['dest']['database']+'`; '+sql
+    sql = sql.replace('CREATE TABLE ', 'CREATE TABLE IF NOT EXISTS `'+input.task['dest']['database']+'`.', 1)
     logging.debug('creating table '+new_table_name+' with sql: '+sql)
     if 'mysql' in input.task['dest']:
         cur = db_dest.cursor()
@@ -96,7 +95,7 @@ def replace_into_new_table(cursor, new_table_name, row):
         column_idx = column_idx+1
     sql = sql+')'
     cursor.execute(sql, params)
-
+"""
 def replace_into_new_table(cursor, new_table_name, row):
     '''replace into new table the value from original table'''
     if new_table_name not in db_new_table:
@@ -112,3 +111,4 @@ def replace_into_new_table(cursor, new_table_name, row):
         column_idx = column_idx+1
     sql = sql+')'
     cursor.execute(sql, params)
+"""
